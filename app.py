@@ -1,10 +1,10 @@
 from openai import OpenAI
-from recursive4 import search_webpage_final
+from text_example import search_query
 
 client = OpenAI()
 
 def chat(query):
-    context = search_webpage_final(query)
+    context = search_query(query)
     prompt_with_context = f"Context: {context}\n\nUser input: {query}"
 
     response = client.chat.completions.create( 
