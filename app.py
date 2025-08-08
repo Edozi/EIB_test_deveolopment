@@ -18,5 +18,4 @@ def chat(query):
             yield chunk.choices[0].delta.content
 
 test = "Ege Ihracatci Birliklerinde en guncel 5 duyuru ne hakkinda?"
-for chunk in chat("Ege Ihracatci Birliklerinde afyonkarahisar blok mermer fuari ne zaman duzenlenecek"):
-    print(chunk, end='', flush=True)
+
