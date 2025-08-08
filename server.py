@@ -22,7 +22,7 @@ async def chat_endpoint(req: ChatRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.environ.get("PORT", 8000))  # Render sets this dynamically
+    port = int(os.environ.get("PORT", 80))  # Render sets this dynamically
     uvicorn.run("server:app", host="0.0.0.0", port=80, reload=True)
 
 
