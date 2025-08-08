@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+import os
 from app import chat  # your existing logic
 
 app = FastAPI()
