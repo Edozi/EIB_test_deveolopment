@@ -1,5 +1,5 @@
 from openai import OpenAI
-from text_example import search_query
+from test_example import search_query
 
 client = OpenAI()
 
