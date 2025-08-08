@@ -5,7 +5,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_unstructured import UnstructuredLoader
 
 
-loader = TextLoader("Data/Gorev.txt")
+loader = TextLoader("Gorev.txt")
 documents = loader.load()
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap = 100)
 
