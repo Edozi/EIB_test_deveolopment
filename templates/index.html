@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .chat-box {
+            width: 400px;
+            margin: 20px auto;
+        }
+        .messages {
+            height: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .input-area {
+            display: flex;
+        }
+        input {
+            flex: 1;
+            padding: 5px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-box">
+        <div class="messages" id="messages"></div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const sessionId = Math.random().toString(36).substring(2);
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const messages = document.getElementById('messages');
+            const message = input.value.trim();
+
+            
+            if (!message) return;
+
+            // Show user message
+            messages.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+            input.value = '';
+
+            try {
+                // Show bot response
+                const botMessage = document.createElement('p');
+                botMessage.innerHTML = '<strong>Bot:</strong> ';
+                messages.appendChild(botMessage);
+
+                // Get streaming response
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream'
+                    },
+                    body: JSON.stringify({ 
+                        query: message,
+                        session_id: sessionId 
+                    })
+                });
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                while (true) {
+                    const {value, done} = await reader.read();
+                    if (done) break;
+                    
+                    const text = decoder.decode(value);
+                    botMessage.innerHTML += text;
+                }
+
+                messages.scrollTop = messages.scrollHeight;
+            } catch (error) {
+                messages.innerHTML += `<p style="color: red;">Error: Failed to send message</p>`;
+            }
+        }
+
+        // Send on Enter key
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
