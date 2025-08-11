@@ -4,7 +4,7 @@ from test_example import search_query
 client = OpenAI()
 
 def chat(query, chat_history):
-    context = search_webpage_final(query)
+    context = search_query(query)
     prompt_with_context = f"Context: {context}\n\nUser input: {query}"
 
     chat_history.append({"role": "user", "content": prompt_with_context})
